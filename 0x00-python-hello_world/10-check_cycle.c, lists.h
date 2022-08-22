@@ -15,8 +15,8 @@ int check_cycle(listint_t *list)
 	while ((turtle && hare) && hare->next)
 	{		
 		turtle = turtle->next;
-    
-if (hare->next || hare->next->next)	
+
+		if (hare->next || hare->next->next)	
 			hare = hare->next->next;
 		else
 			break;
@@ -29,4 +29,4 @@ if (hare->next || hare->next->next)
 	}
 
 	return (found);
-    
+}
