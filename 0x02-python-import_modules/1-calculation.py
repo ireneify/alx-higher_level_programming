@@ -7,7 +7,7 @@ if __name__ == '__main__':
     and division between two numbers
     """
     a = 10
-    a = 5
+    b = 5
     
     print("{} + {} = {}".format(a, b, add(a, b)))
     print("{} - {} = {}".format(a, b, sub(a, b)))
