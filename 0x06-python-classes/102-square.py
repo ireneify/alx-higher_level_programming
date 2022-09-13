@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 """Create a Class Square with size, method of area and getters & setters"""
 
 
@@ -15,8 +14,8 @@ class Square:
         else:
             self.__size = size
 
-   def __lt__(self, other):
-       """Compare operator <"""
+    def __lt__(self, other):
+        """Compare operator <"""
         return (self.area() < other.area())
 
     def __le__(self, other):
@@ -40,9 +39,9 @@ class Square:
         return (self.area() != other.area())
 
     def area(self):
-         """Method to get the area of the Square"""
-         return (self.__size ** 2)
-    
+        """Method to get the area of the Square"""
+        return (self.__size ** 2)
+
     @property
     def size(self):
         """Getter of the private attribute size"""
@@ -52,13 +51,9 @@ class Square:
     def size(self, value):
         """Setter for the size private attribute"""
         if ((type(value) is int) or (type(value) is float)):
-             if (value < 0):
-                 raise (ValueError("size must be >= 0"))
-             else:
-                 self.__size = value
-             else:
-                 raise (TypeError("size must be a number"))
-
-
-
-
+            if (value < 0):
+                raise (ValueError("size must be >= 0"))
+            else:
+                self.__size = value
+        else:
+            raise (TypeError("size must be a number"))
