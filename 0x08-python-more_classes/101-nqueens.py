@@ -1,124 +1,96 @@
 #!/usr/bin/python3
 """
-A Rectangle Class with public class attributes, private instance attributes
-(width, height), public methods, special methods,
-static methods and class methods
+This module contains an algorithm that resolves the N-Queen puzzle
+using backtracking
 """
 
 
-class Rectangle():
+def isSafe(m_queen, nqueen):
+    """ Method that determines if the queens can or can't kill each other
+    Args:
+        m_queen: array that has the queens positions
+        nqueen: queen number
+    Returns:
+        True: when queens can't kill each other
+        False: when some of the queens can kill
     """
-    A Rectangle Class with public class attributes,
-    private instance attributes width, height, public methods,
-    special methods, static methods and class methods.
+
+    for i in range(nqueen):
+
+        if m_queen[i] == m_queen[nqueen]:
+            return False
+
+        if abs(m_queen[i] - m_queen[nqueen]) == abs(i - nqueen):
+            return False
+
+    return True
+
+
+def print_result(m_queen, nqueen):
+    """ Method that prints the list with the Queens positions
+    Args:
+        m_queen: array that has the queens positions
+        nqueen: queen number
     """
 
-    number_of_instances = 0
-    print_symbol = '#'
+    res = []
 
-    def __init__(self, width=0, height=0):
-        """
-        Constructor of the class Rectangle
-          Args:
-            - width (default = 0): int
-            - heigth (default = 0): int
-        """
-        self.width = width
-        self.height = height
-        Rectangle.number_of_instances += 1
+    for i in range(nqueen):
+        res.append([i, m_queen[i]])
 
-    def area(self):
-        """Calculate the area of a Rectangle"""
-        return self.__width * self.__height
+    print(res)
 
-    def perimeter(self):
-        """Get the perimeter of a Rectangle"""
-        if (self.__width == 0 or self.__height == 0):
-            return 0
 
-        return (self.__width * 2) + (self.__height * 2)
+def Queen(m_queen, nqueen):
+    """ Recursive function that executes the Backtracking algorithm
+    Args:
+        m_queen: array that has the queens positions
+        nqueen: queen number
+    """
 
-    def __str__(self):
-        """
-        Function to print a Square with the print_symbol
-        """
+    if nqueen is len(m_queen):
+        print_result(m_queen, nqueen)
+        return
 
-        if self.__width == 0 or self.__height == 0:
-            return ""
+    m_queen[nqueen] = -1
 
-        final = [str(self.print_symbol) * self.__width
-                 for character in range(self.__height)]
+    while((m_queen[nqueen] < len(m_queen) - 1)):
 
-        return '\n'.join(final)
+        m_queen[nqueen] += 1
 
-    def __repr__(self):
-        """Returns an “official” string representation of a Rectangle"""
-        return f'Rectangle({self.__width}, {self.__height})'
+        if isSafe(m_queen, nqueen) is True:
 
-    def __del__(self):
-        """Prints a message when a Rectangle instance is deleted"""
-        print('Bye rectangle...')
-        Rectangle.number_of_instances -= 1
+            if nqueen is not len(m_queen):
+                Queen(m_queen, nqueen + 1)
 
-    @property
-    def width(self):
-        """Getter of the property width"""
-        return self.__width
 
-    @width.setter
-    def width(self, value):
-        """
-        Getter of the property value
-          Args:
-            - value: int
-        """
-        if not isinstance(value, int):
-            raise TypeError('width must be an integer')
+def solveNQueen(size):
+    """ Function that invokes the Backtracking algorithm
+    Args:
+        size: size of the chessboard
+    """
 
-        if value < 0:
-            raise ValueError('width must be >= 0')
+    m_queen = [-1 for i in range(size)]
 
-        self.__width = value
+    Queen(m_queen, 0)
 
-    @property
-    def height(self):
-        """Getter of the property height"""
-        return self.__height
 
-    @height.setter
-    def height(self, value):
-        """
-        Getter of the property value
-          Args:
-            - value: int
-        """
-        if not isinstance(value, int):
-            raise TypeError('height must be an integer')
+if __name__ == '__main__':
 
-        if value < 0:
-            raise ValueError('height must be >= 0')
+    import sys
 
-        self.__height = value
+    if len(sys.argv) == 1 or len(sys.argv) > 2:
+        print("Usage: nqueens N")
+        sys.exit(1)
 
-    @staticmethod
-    def bigger_or_equal(rect_1, rect_2):
-        """
-        Return the biggest rectangle based on the area
-          Args:
-            - rect_1: Rectangle
-            - rect_2: Rectangle
-        """
-        if not isinstance(rect_1, Rectangle):
-            raise TypeError("rect_1 must be an instance of Rectangle")
+    try:
+        size = int(sys.argv[1])
+    except Exception as e:
+        print("N must be a number")
+        sys.exit(1)
 
-        if not isinstance(rect_2, Rectangle):
-            raise TypeError("rect_2 must be an instance of Rectangle")
+    if size < 4:
+        print("N must be at least 4")
+        sys.exit(1)
 
-        if Rectangle.area(rect_1) >= Rectangle.area(rect_2):
-            return rect_1
-        return rect_2
-
-    @classmethod
-    def square(cls, size=0):
-        """Returns a new Rectangle instance with width == height == size"""
-        return cls(size, size)
+    solveNQueen(size)
